@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>CSS Quiz</title>
+  <meta name="description" content="CSS Quiz - Test your Knowledge of CSS with this multichoice quiz">
+  <meta name="keywords" content="CSS, Quiz, Test, Knowledge, Multichoice, Multiple Choice">
+  <meta name="author" content="Hannah Davydova">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+
+  <!-- Bootstrap jQuery -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+  <!-- My CSS -->
+  <link rel="stylesheet" href="styles.css">
+
+</head>
+
+<body>
+  <!-- Title Page -->
+  <div class="container-fluid" id="titleDiv">
+    <div class="row">
+      <div class="col-md-5 col-sm-6 logoDiv">
+        <img src="cssLogo.png" alt="css logo" class="logo">
+      </div>
+      <div class="col-md-7 col-sm-6 textDiv">
+        <h2 class="title">CSS Quiz</h2>
+        <h4>How well do you know your CSS?</h4>
+        <h4>Test your knowledge.</h4>
+        <button class="btn btn-secondary button startPos" onclick='showQuestion()'>Start Quiz</button>
+      </div>
+    </div>
+  </div>
+  <!-- End of title page -->
+
+  <!-- Quiz Div -->
+  <div class="container-fluid" id="testDiv">
+    <div class="container">
+      <div class="progressBarDiv">
+        <div class="progress" id="myProgressBar">
+          <div id="theBar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0"></div>
+        </div>
+
+      </div>
+      <div class="questionNumberDiv">
+        <p class="questionNumber">Question Number</p>
+      </div>
+      <div class="headerQuestion">
+        <p class="quizQuestion">Question<p>
+      </div>
+      <form class="myForm" action="index.html" method="post">
+        <div class="choicesDiv">
+          <input type="radio" class="radio" name="options" id="radioA"><label for="radioA" class="radiolabel" id="A">Option A</label><i class="mark" id="markA"></i>
+        </div>
+        <div class="choicesDiv">
+          <input type="radio" class="radio" name="options" id="radioB"><label for="radioB" class="radiolabel" id="B">Option B</label><i class="mark" id="markB"></i>
+        </div>
+        <div class="choicesDiv">
+          <input type="radio" class="radio" name="options" id="radioC"><label for="radioC" class="radiolabel" id="C">Option C</label><i class="mark" id="markC"></i>
+        </div>
+        <div class="choicesDiv">
+          <input type="radio" class="radio" name="options" id="radioD"><label for="radioD" class="radiolabel" id="D">Option D</label><i class="mark" id="markD"></i>
+        </div>
+      </form>
+      <div class="submitButtonDiv">
+        <button class="btn btn-secondary button quizButton" onclick='showQuestion()'>Start Quiz</button>
+        <span class="selectAnswerTxt">Please choose an answer</span>
+        <!-- <span class="correctAnswers">Test</span> -->
+      </div>
+    </div>
+  </div>
+  <!-- End of quiz div -->
+
+  <!-- Results Page -->
+  <div class="customDiv" id="resultsDiv">
+    <div class="resultsHeaderDiv">
+      <div class="results">
+        <i class="icon"></i>
+        <h1>You scored <span class="score"></span> out of 10</h1>
+      </div>
+    </div>
+    <div class="customDiv messageDiv">
+      <div class="customContainer">
+        <h1 class="message">Well done!</h1>
+        <button class="btn btn-secondary button reviewButton" onclick="reviewResults()">View Results</button>
+        <button class="btn btn-secondary button retryButton">Retry Quiz</button>
+      </div>
+    </div>
+    <!-- Review results -->
+    <div class="customDiv reviewResults">
+      <div class="review">
+        <div class="reviewCorrect">
+          <h4 class="knowTitle">What you know <i class="resultsMark fas fa-check fa-1x check"></i></h4>
+          <div class="correctTopics">
+            <table class="correctTable">
+              <tr>
+                <th>Question(s)</th>
+                <th>Correct Answer(s)</th>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="reviewWrong">
+          <h4 class="reviewTitle">Topics to review again <i class="resultsMark fas fa-times fa-1x times"></i></h4>
+          <div class="wrongTopics">
+            <table class="wrongTable">
+              <tr>
+                <th>Question(s)</th>
+                <th>Your Answer(s)</th>
+                <th>Correct Answer(s)</th>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="customDiv footer">
+
+    </div>
+
+  </div>
+  <!-- End of Results page -->
+
+
+
+  <!-- jQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <!-- My JS -->
+  <script src="quiz.js" charset="utf-8"></script>
+
+</body>
+
+</html>
