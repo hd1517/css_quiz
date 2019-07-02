@@ -8,18 +8,19 @@ var correctQuestions = ["correctTable"];
 var yourCorrectAnswers = ["correctTable"];
 var pbar = document.getElementById("theBar");
 
+// Correct answers are first
 var questions = [{
   question: "What does CSS stand for?",
-  answers: ["Cascading style sheets", "Cascading CSS", "Cascading separate style", "None"]
+  answers: ["Cascading style sheets", "Cascading CSS", "Cascading separate style"]
 }, {
   question: "Which attribute can set text to bold?",
-  answers: ["Font weight", "Text-decoration", "Font style", "None"]
+  answers: ["Font weight", "Text-decoration", "Font style"]
 }, {
   question: "Which tag is used to link an external CSS file?",
-  answers: ["Link", "Script", "Rel", "None"]
+  answers: ["Link", "Script", "Rel"]
 }, {
   question: "Which attribute sets the underline property?",
-  answers: ["Text-decoration", "Font style", "Font weight", "None"]
+  answers: ["Text-decoration", "Font style", "Font weight"]
 }, {
   question: "Which measurement unit is NOT relative?",
   answers: ["Cm", "Px", "%", "Em"]
@@ -56,7 +57,6 @@ var randomisedQuestions = shuffled(questions);
 
 // Function to display questions
 function showQuestion() {
-
   $("#titleDiv").hide(); // Hide the start page
   $("#testDiv").show(); // Show the quiz page
   $(".startPos").removeClass("startPos"); // Remove the button class for start position
@@ -71,6 +71,7 @@ function showQuestion() {
   $(".radiolabel.showCorrect").removeClass("showCorrect"); // Remove correct style class
   $(".radiolabel.showWrong").removeClass("showWrong"); // Remove wrong style class
   $(".choicesDiv.disableDiv").removeClass("disableDiv"); // Remove disabled div style class
+  $(".quizButton").removeClass("nextQuestion");
 
   // Randomise the answer options
   var answers = shuffled(randomisedQuestions[position].answers);
@@ -93,17 +94,16 @@ function showQuestion() {
   $(".quizButton").html("Check Answer").attr("onclick", "checkAnswer()");
 
   // If the option is none, hide the div
-  $(".radiolabel").each(function() {
-    if ($(this).text() == "None") {
-      $(this).parent().hide();
-    }
-  });
+  if (optionD == null) {
+    $(".choicesDivD").hide();
+  }
 
   // Make div clickable and select appropriate radiobutton
   $(".choicesDiv").click(function() {
     $(".choicesDiv.selected").removeClass("selected"); // Remove previously selected divs
     $(this).find("input[type=radio]").prop("checked", true); // Find the radio button within the clicked div
     $(this).addClass("selected"); // Add a background to selected div
+    $(".selectAnswerTxt").hide(); // Hide the error message once a choice has been selected
   });
 
   // On hover, add class to divs
@@ -116,12 +116,11 @@ function showQuestion() {
 // End of showQuestion function
 
 
-// Function to check if chosen answer is correct
+// Function to check answer chosen
 function checkAnswer() {
-  $(".selectAnswerTxt").hide(); // Take away 'Please choose answer' text if it's showing
-  options = $(".radio"); // Declare options as
+  options = $(".radio"); // Declare options
 
-  // Check if an answer has been chosen
+  // Check if an answer has been chosen - validation
   if ($('input[name=options]:checked').length) {
     optionId = $('input[name=options]:checked').attr("id"); // Find id of checked radiobutton
     choice = $("label[for='" + optionId + "']").text(); // Find the value of the radiobutton
@@ -164,7 +163,7 @@ function checkAnswer() {
 
   // Change button text and function
   if (position <= 9) { // Questions 1-10, change button to below
-    $(".quizButton").html("Next Question").attr("onclick", "showQuestion()");
+    $(".quizButton").html("Next Question").attr("onclick", "showQuestion()").addClass("nextQuestion");
   } else { // After question 10, change button to below
     $(".quizButton").html("Finish Quiz").attr("onclick", "showResults()").addClass("finishedQuiz");
   }
@@ -188,7 +187,7 @@ function disableChoices() {
 // End of disableChoices function
 
 
-//Results script
+// Function to show results
 function showResults() {
   results(); // Function to populate the results table
   $(".correctTable tr:even").addClass("altRow"); // Change the background colour of alternating rows for Correct Table
@@ -271,7 +270,7 @@ function doneAnswers(name) {
 }
 // End of doneAnswers function
 
-// Refresh to try test again
+// Callback function for retry quiz button
 $(".retryButton").click(function() {
   // Reset variables
   position = 0;
@@ -311,10 +310,9 @@ $(".retryButton").click(function() {
 });
 
 
-// If user tries to refresh mid-test, show alert
+// On refresh
 $(window).on('beforeunload', function() {
-
-  // return "Are you sure you want to refresh?";
+  // Alert ONLY if user refreshes during the quiz, not during start or end
   if ($("#resultsDiv").is(":hidden")) {
     return "Are you sure you want to refresh?"; // default alert to ask if they want to refresh as their progress will not be saved
   }
